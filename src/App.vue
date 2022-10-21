@@ -1,5 +1,5 @@
 <template>
-  <div class="container is-fluid">
+  <div class="container">
     <h1 class="is-size-3">DM</h1>
     <div class="columns is-mobile is-multiline">
       <DrumPad v-for="drum in drums" :drum="drum"/>
@@ -58,3 +58,11 @@
     }
   }
 </script>
+
+<style lang="scss">
+
+.container {
+  max-width:500px;
+}
+
+</style>
