@@ -1,20 +1,20 @@
 <template>
-        <button class="button" @click="this.recording = !this.recording" :class="{recording: this.recording}">Start Loop</button>
+        <LoopPlayer />
 </template>
 
 <script>
+import { useLoopStore } from '@/store/useLoop'
+import LoopPlayer from './LoopPlayer.vue'
+
 export default {
     name: 'LoopManager',
+    components: {
+        LoopPlayer
+    },
     data () {
         return {
-            recording: false
+            store: useLoopStore()
         }
     }
 }
 </script>
-
-<style>
-.recording {
-    border: 1px solid red !important;
-}
-</style>

@@ -11,6 +11,8 @@
 </template>
 
 <script>
+import { useLoopStore } from '@/store/useLoop'
+
     export default {
         name: 'DrumPad',
         props: [
@@ -18,7 +20,8 @@
         ],
         data () {
             return {
-                isPressed: false
+                isPressed: false,
+                store: useLoopStore()
             }
         },
         methods: {
@@ -27,12 +30,15 @@
                     this.isPressed = true
 
                     const drumSound = new Audio("./src/assets/sounds/" + this.drum.sound + ".mp3")
-
                     drumSound.play()
 
                     setTimeout(() => {
                         this.isPressed = false
-                    }, 200)      
+                    }, 200)
+                    
+                    if (this.store.loopRecording) {
+                        this.store.addDrumbeat(this.drum.keybind)
+                    }
                 }  
             }
         },
