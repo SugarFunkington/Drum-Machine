@@ -1,6 +1,14 @@
-import { createApp } from "vue";
-import App from "./App.vue";
+import { createApp } from "vue"
+import App from "./App.vue"
 
-import '@/assets/main.scss';
+// SCSS
+import "@/assets/main.scss"
 
-createApp(App).mount("#app");
+// State management
+import { createPinia } from "pinia"
+
+const pinia = createPinia()
+const app = createApp(App)
+
+app.use(pinia)
+app.mount("#app")

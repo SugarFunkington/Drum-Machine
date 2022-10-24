@@ -29,7 +29,7 @@
                     const drumSound = new Audio("./src/assets/sounds/" + this.drum.sound + ".mp3")
 
                     drumSound.play()
-                    
+
                     setTimeout(() => {
                         this.isPressed = false
                     }, 200)      

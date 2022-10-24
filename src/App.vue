@@ -1,21 +1,28 @@
 <template>
   <div class="section">
     <div class="container" style="max-width:450px;">
+
       <h1 class="is-size-3">DM</h1>
+
       <div class="columns is-mobile is-multiline">
         <DrumPad v-for="drum in drums" :drum="drum"/>
       </div>
+
+      <LoopManager />
+
     </div>
   </div>
 </template>
 
 <script>
-  import DrumPad from './components/DrumPad.vue'
+import DrumPad from './components/DrumPad.vue'
+import LoopManager from './components/LoopManager.vue';
 
-  export default {
+export default {
     components: {
-      DrumPad
-    },
+    DrumPad,
+    LoopManager
+},
     data () {
       return {
         drums: [
