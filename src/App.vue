@@ -1,8 +1,10 @@
 <template>
-  <div class="container">
-    <h1 class="is-size-3">DM</h1>
-    <div class="columns is-mobile is-multiline">
-      <DrumPad v-for="drum in drums" :drum="drum"/>
+  <div class="section">
+    <div class="container" style="max-width:450px;">
+      <h1 class="is-size-3">DM</h1>
+      <div class="columns is-mobile is-multiline">
+        <DrumPad v-for="drum in drums" :drum="drum"/>
+      </div>
     </div>
   </div>
 </template>
@@ -60,9 +62,7 @@
 </script>
 
 <style lang="scss">
-
-.container {
-  max-width:500px;
+.frame {
+  max-width:300px;
 }
-
 </style>
