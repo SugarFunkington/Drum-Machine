@@ -16,24 +16,31 @@ export const useLoopStore = defineStore('main', {
         },
         stopRecording() {
             this.loopRecording = false
-            // set both times to 0, adding time for the last drumbeat in the loop
+            this.drumbeatStartTime = 0
         },
         addDrumbeat(drumbeat) {
-            // if start time = 0, add a start time
-            // if not, add an end time and calculate the timeElapsed
-            // add the timeElapsed to the previous drumbeat in the loop
+            // if the drumbeat is the first in the recording, push it with no pause
             if (!this.drumbeatStartTime) {
                 this.drumbeatStartTime = new Date().getTime()
+
+                this.loops[this.loops.length - 1].push({
+                    drumbeat: drumbeat,
+                    pause: 0
+                })
             } else {
+                // Push subsequent drum beats with the required pause
                 this.drumbeatEndTime = new Date().getTime()
                 let timeElapsed = this.drumbeatEndTime - this.drumbeatStartTime
-                this.loops[this.loops.length - 1].at(-1).time = timeElapsed
-            }
+                this.loops[this.loops.length - 1].push({
+                    drumbeat: drumbeat,
+                    pause: timeElapsed
+                })
 
-            this.loops[this.loops.length - 1].push({
-                drumbeat: drumbeat,
-                time: 0
-            })
+                // Reset the timers for the next drumbeat
+                this.drumbeatEndTime = 0
+                this.drumbeatStartTime = new Date().getTime()
+
+            }
         },
     }
 })

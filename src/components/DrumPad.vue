@@ -4,7 +4,7 @@
             <p class="is-size-3 
                         has-text-centered 
                         has-text-dark">
-                            {{drum.keybind.toUpperCase()}}
+                            {{keybind.toUpperCase()}}
                         </p>
         </div>
     </div>
@@ -16,7 +16,7 @@ import { useLoopStore } from '@/store/useLoop'
     export default {
         name: 'DrumPad',
         props: [
-            'drum'
+            'drumbeat', 'keybind'
         ],
         data () {
             return {
@@ -26,10 +26,10 @@ import { useLoopStore } from '@/store/useLoop'
         },
         methods: {
             playDrum(e) {
-                if (e.key === this.drum.keybind || e.type === "click") {
+                if (e.key === this.keybind || e.type === "click") {
                     this.isPressed = true
 
-                    const drumSound = new Audio("./src/assets/sounds/" + this.drum.sound + ".mp3")
+                    const drumSound = new Audio("./src/assets/sounds/" + this.drumbeat + ".mp3")
                     drumSound.play()
 
                     setTimeout(() => {
@@ -37,7 +37,7 @@ import { useLoopStore } from '@/store/useLoop'
                     }, 200)
                     
                     if (this.store.loopRecording) {
-                        this.store.addDrumbeat(this.drum.keybind)
+                        this.store.addDrumbeat(this.keybind)
                     }
                 }  
             }

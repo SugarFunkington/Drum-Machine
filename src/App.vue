@@ -5,10 +5,10 @@
       <h1 class="is-size-3">DM</h1>
 
       <div class="columns is-mobile is-multiline">
-        <DrumPad v-for="drum in drums" :drum="drum"/>
+        <DrumPad v-for="(drumbeat, keybind) in drums" :drumbeat="drumbeat" :keybind="keybind"/>
       </div>
 
-      <LoopManager />
+      <LoopManager :drums="this.drums"/>
 
     </div>
   </div>
@@ -25,44 +25,17 @@ export default {
 },
     data () {
       return {
-        drums: [
-          {
-            keybind: "q",
-            sound: "Heater-1"
-          },
-          {
-            keybind: "w",
-            sound: "Heater-2"
-          },
-          {
-            keybind: "e",
-            sound: "Heater-3"
-          },
-          {
-            keybind: "a",
-            sound: "Heater-4"
-          },
-          {
-            keybind: "s",
-            sound: "Open-HH"
-          },
-          {
-            keybind: "d",
-            sound: "Closed-HH"
-          },
-          {
-            keybind: "z",
-            sound: "Clap"
-          },
-          {
-            keybind: "x",
-            sound: "Kick-n-hat"
-          },
-          {
-            keybind: "c",
-            sound: "Kick"
+        drums: {
+            q: "Heater-1",
+            w: "Heater-2",
+            e: "Heater-3",
+            a: "Heater-4",
+            s: "Open-HH",
+            d: "Closed-HH",
+            z: "Clap",
+            x: "Kick-n-hat",
+            c: "Kick"
           }
-        ]
       }
     }
   }
