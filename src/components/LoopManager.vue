@@ -1,6 +1,6 @@
 <template>
         <LoopRecorder />
-        <LoopPlayback v-for="loop in this.store.loops" :loop="loop" :drums="this.drums" />
+        <LoopPlayback v-for="(loop, index) in this.store.loops" :loop="loop" :drums="this.drums" :index="index"/>
 
 </template>
 
