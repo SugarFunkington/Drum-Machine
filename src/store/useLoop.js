@@ -39,12 +39,9 @@ export const useLoopStore = defineStore('main', {
             for (let i=0;i<this.loops[loopIndex].length;i++) {
                 const drumSound = new Audio("./src/assets/sounds/" + drums[this.loops[loopIndex].at(i).drumbeat] + ".mp3")
                 drumSound.play()
-                
+                console.log(drums[this.loops[loopIndex].at(i).drumbeat])
                 await timer(this.loops[loopIndex].at(i).pause)
             }
-
-        },
-        pauseLoop(loopIndex) {
 
         },
         deleteLoop(loopIndex) {

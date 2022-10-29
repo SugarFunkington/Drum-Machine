@@ -1,7 +1,6 @@
 <template>
         <LoopRecorder />
         <LoopPlayback v-for="(loop, index) in this.store.loops" :loop="loop" :index="index"/>
-
 </template>
 
 <script>
