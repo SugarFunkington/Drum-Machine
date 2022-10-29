@@ -1,6 +1,6 @@
 <template>
         <LoopRecorder />
-        <LoopPlayback v-for="(loop, index) in this.store.loops" :loop="loop" :drums="this.drums" :index="index"/>
+        <LoopPlayback v-for="(loop, index) in this.store.loops" :loop="loop" :index="index"/>
 
 </template>
 
@@ -11,9 +11,6 @@ import LoopPlayback from './LoopPlayback.vue'
 
 export default {
     name: 'LoopManager',
-    props: [
-        'drums'
-    ],
     components: {
         LoopRecorder,
         LoopPlayback

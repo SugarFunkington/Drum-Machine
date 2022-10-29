@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { useDrumsStore } from './useDrums.js'
 
 export const useLoopStore = defineStore('main', {
     state: () => ({
@@ -25,6 +26,29 @@ export const useLoopStore = defineStore('main', {
             this.drumbeatStartTime = 0
             
             this.loopRecording = false
+        },
+        async playLoop(loopIndex) {
+            // Set timer to delay the loop by the required pause
+            const timer = ms => new Promise(res => setTimeout(res, ms))
+
+            // Get the drums data
+            const drumStore = useDrumsStore()
+            const drums = drumStore.getDrums()
+
+            // Loop through the recording and play the drums
+            for (let i=0;i<this.loops[loopIndex].length;i++) {
+                const drumSound = new Audio("./src/assets/sounds/" + drums[this.loops[loopIndex].at(i).drumbeat] + ".mp3")
+                drumSound.play()
+                
+                await timer(this.loops[loopIndex].at(i).pause)
+            }
+
+        },
+        pauseLoop(loopIndex) {
+
+        },
+        deleteLoop(loopIndex) {
+
         },
         addDrumbeat(drumbeat) {
                 // Push drum beat with the required pause
