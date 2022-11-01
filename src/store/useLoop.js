@@ -45,7 +45,7 @@ export const useLoopStore = defineStore('main', {
 
         },
         deleteLoop(loopIndex) {
-
+            this.loops.splice(loopIndex, 1)
         },
         addDrumbeat(drumbeat) {
                 // Push drum beat with the required pause
