@@ -1,3 +1,6 @@
-$primary: rgb(209, 209, 209);
 
 @import '../node_modules/bulma/bulma.sass';
+
+html {
+    background-color: $background;
+}

@@ -52,13 +52,13 @@ import { useLoopStore } from '@/store/useLoop'
 <style lang="scss">
 
 .drumpad {
-    padding:40px 0px;
+    padding:20px 0px;
     border-radius:8px;
     background:linear-gradient(#cacaca, #595959);
 }
 
 .pressed {
-    border: 2px solid red;
+    border: 2px solid $primary;
 }
 
 .drumpad:hover {

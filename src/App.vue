@@ -2,8 +2,6 @@
   <div class="section">
     <div class="container" style="max-width:450px;">
 
-      <h1 class="is-size-3">DM</h1>
-
       <div class="columns is-mobile is-multiline">
         <DrumPad v-for="(drumbeat, keybind) in this.store.getDrums()" :drumbeat="drumbeat" :keybind="keybind"/>
       </div>
@@ -32,9 +30,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-.frame {
-  max-width:300px;
-}
-</style>
