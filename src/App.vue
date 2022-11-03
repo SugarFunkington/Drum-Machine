@@ -1,6 +1,6 @@
 <template>
   <div class="section">
-    <div class="container" style="max-width:450px;">
+    <div class="container" style="max-width:350px;">
 
       <div class="columns is-mobile is-multiline">
         <DrumPad v-for="(drumbeat, keybind) in this.store.getDrums()" :drumbeat="drumbeat" :keybind="keybind"/>
