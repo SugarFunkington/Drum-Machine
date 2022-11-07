@@ -12,7 +12,6 @@ export const useLoopStore = defineStore('main', {
     },
     actions: {
         toggleRecording(e) {
-            console.log(e)
             // If a loop is recording, stop it and close the loop
             if (e.code === "Space" || e.type === "click") {
                 if (this.loopRecording) {

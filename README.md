@@ -1,4 +1,10 @@
-# Drum-Machine
+# Looper
+
+Vite for development
+Pinia for state management
+Font Awesome
+SASS
+Stores
 
 This template should help get you started developing with Vue 3 in Vite.
 

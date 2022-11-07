@@ -1,5 +1,5 @@
 <template>
-    <div class="has-text-centered">
+    <div class="has-text-centered p-2">
         <button 
             class="notRecording" 
             :class="{recording:this.store.loopRecording}"
