@@ -11,8 +11,9 @@
 
         <div class="drumbeat-progress-indicator">
             <div class="drumbeats is-flex is-flex-direction-row is-justify-content-center">
-                <span v-for="drum in loop" class="drumbeat-playback has-text-light has-text-centered is-unselectable">{{drum.drumbeat.toUpperCase()}}</span>
+                <DrumbeatPreview v-for="(drum, index) in loop" :index="index" :drum="drum" :loop="loop" :playingLoop="this.playingLoop" ref="drumbeatPreview"/>
             </div>
+
             <div class="progress-bar-bg">
                 <div class="progress-bar" :class="{'in-progress': this.playingLoop}"></div>
             </div>
@@ -27,37 +28,45 @@
 
 <script>
 import { useLoopStore } from '@/store/useLoop'
+import DrumbeatPreview from './DrumbeatPreview.vue'
 
 export default {
-    name:"LoopPlayback",
+    name: "LoopPlayback",
     props: [
-        'loop', 'index'
+        "loop",
+        "index"
     ],
-    data () {
+    components: {
+        DrumbeatPreview
+    },
+    data() {
         return {
             store: useLoopStore(),
             playingLoop: false,
             totalLoopLength: 0,
-        }
+        };
     },
     methods: {
         async loopPlayLoop(index, loop) {
-            this.setTotalLoopLength(loop)
-            this.playingLoop = true
 
+            this.setTotalLoopLength(loop);
+
+            for (let i=0;i<this.$refs.drumbeatPreview.length;i++) {
+                this.$refs.drumbeatPreview[i].setDrumbeatPosition(this.totalLoopLength)
+            }
+
+            this.playingLoop = true;
             while (this.playingLoop) {
-                await this.store.playLoop(index)
+                await this.store.playLoop(index);
             }
         },
         pauseLoop() {
-            this.playingLoop = false
+            this.playingLoop = false;
         },
         setTotalLoopLength(loop) {
-            this.totalLoopLength = loop.reduce((pV,cV) => {
-                return pV += cV.pause
-            }, 0)
-
-            this.totalLoopLength += 'ms'
+            this.totalLoopLength = loop.reduce((pV, cV) => {
+                return pV += cV.pause;
+            }, 0);
         }
     }
 }
@@ -83,7 +92,7 @@ export default {
     z-index:1;
 }
 .progress-bar {
-    width:5%;
+    width:0%;
     height:100%;
     background-color:$light;
 }
@@ -92,7 +101,7 @@ export default {
     animation-name: inProgress;
     animation-iteration-count: infinite;
     animation-timing-function: linear;
-    animation-duration:v-bind('totalLoopLength');
+    animation-duration:v-bind('totalLoopLength + "ms"');
 }
 
 .drumbeats {
@@ -105,14 +114,6 @@ export default {
     height:38px;
     width:100%;
     position:relative;
-}
-.drumbeat-playback {
-    display:inline-block;
-    border:1px solid $dark;
-    border-radius:100%;
-    padding:2px 9px;
-    margin:4px;
-    background-color:$background;
 }
 
 button {

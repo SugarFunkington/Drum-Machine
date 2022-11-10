@@ -4,7 +4,7 @@
             class="notRecording" 
             :class="{recording:this.store.loopRecording}"
             @click="this.store.toggleRecording($event)" 
-            @keypress="this.store.toggleRecording(e)"></button>
+            @keypress="this.store.toggleRecording($event)"></button>
     </div>
 </template>
 
@@ -20,7 +20,7 @@ export default {
     },
     created() {
         window.addEventListener('keydown', this.store.toggleRecording)
-     }
+    }
 }
 </script>
 
