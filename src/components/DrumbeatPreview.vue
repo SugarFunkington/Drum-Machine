@@ -17,7 +17,11 @@ export default {
         }
     },
     methods: {
-        setDrumbeatPosition(loopLength) {
+        setDrumbeatPosition(loopLength, parentBox) {
+            // NOT WORKING - need to check how the new left position is assigned
+            const currentDrumbeat = document.getElementsByClassName('drumbeat-playback')
+            const currentLeft = currentDrumbeat[this.$props.index].getBoundingClientRect().left
+
             let drumbeatPause = this.loop.reduce((pV, cV, index) => {
                 if (index <= this.$props.index) {
                     return pV + cV.pause
@@ -25,8 +29,19 @@ export default {
                 return pV
             }, 0)
 
-            this.left = Math.round((drumbeatPause / loopLength) * 100)
-            
+            let percentageLeft = drumbeatPause / loopLength
+
+            if (percentageLeft > 0.75) {
+                percentageLeft = 0.75
+            } else if (percentageLeft < 0.25) {
+                percentageLeft = 0.25
+            }
+
+            let newLeftPosition = (parentBox[0].width * percentageLeft) + parentBox[0].left
+
+            console.log(currentLeft, newLeftPosition)
+
+            this.left = newLeftPosition - currentLeft
         }
     }
 }
@@ -46,7 +61,7 @@ export default {
 }
 
 .position-set {
-    position:absolute;
-    left:v-bind('left + "%"');
+    position:relative;
+    left:v-bind('left + "px"');
 }
 </style>

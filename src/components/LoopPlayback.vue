@@ -22,6 +22,7 @@
         <button @click="this.store.deleteLoop(index)">
             <font-awesome-icon icon="fa-solid fa-trash-can"/>
         </button>
+        {{loop}}
         
     </div>
 </template>
@@ -44,6 +45,7 @@ export default {
             store: useLoopStore(),
             playingLoop: false,
             totalLoopLength: 0,
+            parentBox: {}
         };
     },
     methods: {
@@ -52,7 +54,7 @@ export default {
             this.setTotalLoopLength(loop);
 
             for (let i=0;i<this.$refs.drumbeatPreview.length;i++) {
-                this.$refs.drumbeatPreview[i].setDrumbeatPosition(this.totalLoopLength)
+                this.$refs.drumbeatPreview[i].setDrumbeatPosition(this.totalLoopLength, this.parentBox)
             }
 
             this.playingLoop = true;
@@ -68,6 +70,11 @@ export default {
                 return pV += cV.pause;
             }, 0);
         }
+    },
+    mounted() {
+        // In order to position the drumbeats correctly on the progress bar, they must be made aware of the position of their parent element
+        const bar = document.getElementsByClassName('progress-bar-bg')
+        this.parentBox = bar[0].getClientRects()
     }
 }
 </script>
