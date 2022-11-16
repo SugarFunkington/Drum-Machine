@@ -1,7 +1,7 @@
 <template>
-        <LoopRecorder />
+        <LoopRecorder @stop-recording="this.autoplayLoop()" />
         <TransitionGroup name="loopList">
-            <LoopPlayback v-for="(loop, index) in this.store.loops" :loop="loop" :index="index" :key="loop"/>
+            <LoopPlayback v-for="(loop, index) in this.store.loops" ref="loops" :loop="loop" :index="index" :key="loop" />
         </TransitionGroup>
 </template>
 
@@ -19,6 +19,13 @@ export default {
     data () {
         return {
             store: useLoopStore()
+        }
+    },
+    methods: {
+        autoplayLoop() {
+            console.log(this.$refs.loops.at(-1))
+            let loop = this.$refs.loops.at(-1)
+            loop.loopPlayLoop(loop.index, loop.loop)
         }
     }
 }

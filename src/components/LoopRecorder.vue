@@ -3,8 +3,8 @@
         <button 
             class="notRecording" 
             :class="{recording:this.store.loopRecording}"
-            @click="this.store.toggleRecording($event)" 
-            @keypress="this.store.toggleRecording($event)"></button>
+            @click="this.toggleRecording($event)" 
+            @keypress="this.toggleRecording($event)"></button>
     </div>
 </template>
 
@@ -20,6 +20,14 @@ export default {
     },
     created() {
         window.addEventListener('keydown', this.store.toggleRecording)
+    },
+    methods: {
+        toggleRecording(e) {
+            this.store.toggleRecording(e)
+            if (!this.store.loopRecording) {
+                this.$emit('stopRecording')
+            }
+        }
     }
 }
 </script>

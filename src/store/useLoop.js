@@ -36,6 +36,7 @@ export const useLoopStore = defineStore('main', {
                     this.drumbeatStartTime = 0
                     
                     this.loopRecording = false
+
                 } else {
                     this.loopRecording = true
                     this.loops.push([])
@@ -54,7 +55,7 @@ export const useLoopStore = defineStore('main', {
             // Loop through the recording and play the drums
             for (let i=0;i<this.loops[loopIndex].length;i++) {
                 await timer(this.loops[loopIndex].at(i).pause)
-                
+
                 // Don't play anything if drumbeat is blank - last beat is a blank pause for syncronization
                 if (this.loops[loopIndex].at(i).drumbeat !== '') {
                     const drumSound = new Audio("./src/assets/sounds/" + drums[this.loops[loopIndex].at(i).drumbeat] + ".mp3")
