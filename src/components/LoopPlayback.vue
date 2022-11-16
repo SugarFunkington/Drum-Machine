@@ -11,7 +11,7 @@
 
         <div class="drumbeat-progress-indicator">
             <div class="drumbeats is-flex is-flex-direction-row is-justify-content-center">
-                <DrumbeatPreview v-for="(drum, index) in loop" :index="index" :drum="drum" :loop="loop" :playingLoop="this.playingLoop" ref="drumbeatPreview"/>
+                <DrumbeatPreview v-for="(drum, index) in loop" :index="index" :drum="drum" :loop="loop" :playingLoop="this.playingLoop" :positionIsSet="this.beatPositionIsSet" ref="drumbeatPreview"/>
             </div>
 
             <div class="progress-bar-bg">
@@ -43,6 +43,7 @@ export default {
         return {
             store: useLoopStore(),
             playingLoop: false,
+            beatPositionIsSet: false,
             totalLoopLength: 0,
             parentBox: {}
         };
@@ -51,12 +52,15 @@ export default {
         async loopPlayLoop(index, loop) {
 
             this.setTotalLoopLength(loop);
-
-            for (let i=0;i<this.$refs.drumbeatPreview.length;i++) {
-                this.$refs.drumbeatPreview[i].setDrumbeatPosition(this.totalLoopLength, this.parentBox)
+            this.playingLoop = true;
+            
+            if (!this.beatPositionIsSet) {
+                for (let i=0;i<this.$refs.drumbeatPreview.length-1;i++) {
+                    this.$refs.drumbeatPreview[i].setDrumbeatPosition(this.totalLoopLength, this.parentBox)
+                }
+                this.beatPositionIsSet = true;
             }
 
-            this.playingLoop = true;
             while (this.playingLoop) {
                 await this.store.playLoop(index);
             }

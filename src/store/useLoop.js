@@ -53,9 +53,13 @@ export const useLoopStore = defineStore('main', {
 
             // Loop through the recording and play the drums
             for (let i=0;i<this.loops[loopIndex].length;i++) {
-                const drumSound = new Audio("./src/assets/sounds/" + drums[this.loops[loopIndex].at(i).drumbeat] + ".mp3")
-                drumSound.play()
                 await timer(this.loops[loopIndex].at(i).pause)
+                
+                // Don't play anything if drumbeat is blank - last beat is a blank pause for syncronization
+                if (this.loops[loopIndex].at(i).drumbeat !== '') {
+                    const drumSound = new Audio("./src/assets/sounds/" + drums[this.loops[loopIndex].at(i).drumbeat] + ".mp3")
+                    drumSound.play()
+                }
             }
 
         },
