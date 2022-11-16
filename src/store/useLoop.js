@@ -12,16 +12,25 @@ export const useLoopStore = defineStore('main', {
     },
     actions: {
         toggleRecording(e) {
+            let currentLoop = this.loops[this.loops.length - 1]
+
             // If a loop is recording, stop it and close the loop
             if (e.code === "Space" || e.type === "click") {
                 if (this.loopRecording) {
                     this.drumbeatEndTime = new Date().getTime()
+
                     // Check to see if anything has been recorded
-                    if (this.loops[this.loops.length - 1] > 0) {
-                        // Add the remaining pause to the last drumbeat to maintain beat syncronization
-                        this.loops[this.loops.length - 1].at(-1).pause += (this.drumbeatEndTime - this.drumbeatStartTime)
+                    if (currentLoop.length) {
+                        // Add blank beat with pause to keep syncronization
+                        currentLoop.push({
+                            drumbeat: "",
+                            pause: this.drumbeatEndTime - this.drumbeatStartTime
+                        })
+                    } else {
+                        // If nothing is recorded, delete the empty loop
+                        this.loops.pop()
                     }
-                    
+
                     // Reset the timers for the next recording
                     this.drumbeatEndTime = 0
                     this.drumbeatStartTime = 0

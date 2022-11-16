@@ -1,5 +1,5 @@
 <template>
-    <div class="drumbeat-playback has-text-light has-text-centered is-unselectable"
+    <div  v-if="(drum.drumbeat !== '')" class="drumbeat-playback has-text-light has-text-centered is-unselectable"
         :class="{'position-set':this.$props.playingLoop}">
         {{drum.drumbeat.toUpperCase()}}
     </div>
@@ -19,6 +19,12 @@ export default {
     methods: {
         setDrumbeatPosition(loopLength, parentBox) {
             // NOT WORKING - need to check how the new left position is assigned
+
+            // if the beat is the hidden beat at the end of the loop, do nothing
+            if (this.$props.index = (loopLength - 1)) {
+                return
+            }
+
             const currentDrumbeat = document.getElementsByClassName('drumbeat-playback')
             const currentLeft = currentDrumbeat[this.$props.index].getBoundingClientRect().left
 

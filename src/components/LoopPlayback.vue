@@ -22,7 +22,6 @@
         <button @click="this.store.deleteLoop(index)">
             <font-awesome-icon icon="fa-solid fa-trash-can"/>
         </button>
-        {{loop}}
         
     </div>
 </template>
