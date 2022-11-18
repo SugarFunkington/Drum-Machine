@@ -6,6 +6,7 @@ export const useLoopStore = defineStore('main', {
         loopRecording: false,
         drumbeatStartTime: 0,
         drumbeatEndTime: 0,
+        loopDuration: 0,
         loops: []
     }),
     getters: {
@@ -29,6 +30,11 @@ export const useLoopStore = defineStore('main', {
                     } else {
                         // If nothing is recorded, delete the empty loop
                         this.loops.pop()
+                    }
+
+                    // Set global loopDuration
+                    if (currentLoop === this.loops[0]) {
+                        this.setLoopDuration(currentLoop)
                     }
 
                     // Reset the timers for the next recording
@@ -66,6 +72,11 @@ export const useLoopStore = defineStore('main', {
         },
         deleteLoop(loopIndex) {
             this.loops.splice(loopIndex, 1)
+        },
+        setLoopDuration(loop) {
+            this.loopDuration = loop.reduce((pV, cV) => {
+                return pV += cV.pause;
+            }, 0);
         },
         addDrumbeat(drumbeat) {
                 // Push drum beat with the required pause

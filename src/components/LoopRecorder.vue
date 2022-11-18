@@ -19,7 +19,7 @@ export default {
         }
     },
     created() {
-        window.addEventListener('keydown', this.store.toggleRecording)
+        window.addEventListener('keydown', this.toggleRecording)
     },
     methods: {
         toggleRecording(e) {

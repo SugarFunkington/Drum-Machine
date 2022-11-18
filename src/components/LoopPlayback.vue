@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import { mapState } from 'pinia'
 import { useLoopStore } from '@/store/useLoop'
 import DrumbeatPreview from './DrumbeatPreview.vue'
 
@@ -44,34 +45,34 @@ export default {
             store: useLoopStore(),
             playingLoop: false,
             beatPositionIsSet: false,
-            totalLoopLength: 0,
+            loopDuration: 0,
             parentBox: {}
         };
     },
     methods: {
-        async loopPlayLoop(index, loop) {
+        async loopPlayLoop(index) {
 
-            this.setTotalLoopLength(loop);
             this.playingLoop = true;
             
+            this.loopDuration = this.store.loopDuration;
+
             if (!this.beatPositionIsSet) {
                 for (let i=0;i<this.$refs.drumbeatPreview.length-1;i++) {
-                    this.$refs.drumbeatPreview[i].setDrumbeatPosition(this.totalLoopLength, this.parentBox)
+                    this.$refs.drumbeatPreview[i].setDrumbeatPosition(this.store.loopDuration, this.parentBox)
                 }
                 this.beatPositionIsSet = true;
             }
 
             while (this.playingLoop) {
+                if (!index) {
+                    this.$emit('loopBeginning');
+                }
+
                 await this.store.playLoop(index);
             }
         },
         pauseLoop() {
             this.playingLoop = false;
-        },
-        setTotalLoopLength(loop) {
-            this.totalLoopLength = loop.reduce((pV, cV) => {
-                return pV += cV.pause;
-            }, 0);
         }
     },
     mounted() {
@@ -111,7 +112,7 @@ export default {
     animation-name: inProgress;
     animation-iteration-count: infinite;
     animation-timing-function: linear;
-    animation-duration:v-bind('totalLoopLength + "ms"');
+    animation-duration:v-bind('loopDuration + "ms"');
 }
 
 .drumbeats {
