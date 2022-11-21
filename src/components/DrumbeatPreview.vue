@@ -1,19 +1,27 @@
 <template>
     <div  v-if="(drum.drumbeat !== '')" class="drumbeat-playback has-text-light has-text-centered is-unselectable"
-        :class="{'position-set':this.$props.positionIsSet}">
+        :class="{'position-set':this.$props.loopStarted, 'not-first-loop':this.store.loops.indexOf(this.loop)}">
         {{drum.drumbeat.toUpperCase()}}
     </div>
 </template>
 
 <script>
+import { useLoopStore } from '@/store/useLoop'
+
 export default {
     name: "DrumbeatPreview",
     props: [
-        'index', 'drum', 'loop', 'playingLoop', 'positionIsSet'
+        'index', 'drum', 'loop', 'playingLoop', 'loopStarted', 'parentBox'
     ],
     data() {
         return {
-            left:0
+            left:0,
+            store: useLoopStore()
+        }
+    },
+    mounted() {
+        if (this.store.loops.indexOf(this.loop)) {
+            this.setDrumbeatPosition(this.store.loopDuration, this.parentBox)
         }
     },
     methods: {
@@ -30,15 +38,17 @@ export default {
 
             let percentageLeft = drumbeatPause / loopLength
 
-            if (percentageLeft > 0.75) {
-                percentageLeft = 0.75
-            } else if (percentageLeft < 0.25) {
-                percentageLeft = 0.25
+            if (percentageLeft > 0.90) {
+                percentageLeft = 0.90
             }
 
-            let newLeftPosition = (parentBox[0].width * percentageLeft) + parentBox[0].left
-
-            this.left = newLeftPosition - currentLeft
+            if (this.store.loops.indexOf(this.loop)) {
+                this.left = percentageLeft * 100
+            } else {
+                let newLeftPosition = (parentBox[0].width * percentageLeft) + parentBox[0].left
+    
+                this.left = newLeftPosition - currentLeft
+            }
         }
     }
 }
@@ -49,8 +59,10 @@ export default {
     display:inline-block;
     border:1px solid $dark;
     border-radius:100%;
-    padding:2px 9px;
+    padding-top:2px;
     margin:4px;
+    height:32px;
+    width:32px;
     background-color:$background;
     transition: all 0.3s ease;
     position:relative;
@@ -60,5 +72,11 @@ export default {
 .position-set {
     position:relative;
     left:v-bind('left + "px"');
+}
+
+.not-first-loop {
+    position:absolute;
+    left:v-bind('left + "%"');
+    transition:none;
 }
 </style>

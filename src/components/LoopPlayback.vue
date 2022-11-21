@@ -11,7 +11,7 @@
 
         <div class="drumbeat-progress-indicator">
             <div class="drumbeats is-flex is-flex-direction-row is-justify-content-center">
-                <DrumbeatPreview v-for="(drum, index) in loop" :index="index" :drum="drum" :loop="loop" :playingLoop="this.playingLoop" :positionIsSet="this.loopStarted" ref="drumbeatPreview"/>
+                <DrumbeatPreview v-for="(drum, index) in loop" :index="index" :drum="drum" :loop="loop" :playingLoop="this.playingLoop" :loopStarted="this.loopStarted" :parentBox="this.parentBox" ref="drumbeatPreview"/>
             </div>
 
             <div class="progress-bar-bg">
@@ -22,7 +22,6 @@
         <button @click="this.store.deleteLoop(index)">
             <font-awesome-icon icon="fa-solid fa-trash-can"/>
         </button>
-        
     </div>
 </template>
 
@@ -58,7 +57,7 @@ export default {
             }
 
             if (!this.loopStarted) {
-                for (let i=0;i<this.$refs.drumbeatPreview.length-1;i++) {
+                for (let i=0;i<this.$refs.drumbeatPreview.length;i++) {
                     this.$refs.drumbeatPreview[i].setDrumbeatPosition(this.store.loopDuration, this.parentBox)
                 }
                 this.loopStarted = true;
