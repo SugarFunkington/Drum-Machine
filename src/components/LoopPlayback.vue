@@ -1,5 +1,5 @@
 <template>
-    <div class="p-2 is-flex is-flex-direction-row is-justify-content-space-between">
+    <div class="progress-container p-2 is-flex is-flex-direction-row is-justify-content-space-between">
 
         <button @click="this.loopPlayLoop(index, loop)" v-if="!this.playingLoop">
             <font-awesome-icon icon="fa-solid fa-play"/>
@@ -134,6 +134,10 @@ button {
     color:$light;
     width:24px;
     cursor:pointer;
+}
+
+.progress-container {
+    width:100%;
 }
 
 </style>
