@@ -1,7 +1,7 @@
 <template>
         <LoopRecorder @stop-recording="this.autoplayLoop()" />
         <TransitionGroup name="loopList">
-            <LoopPlayback v-for="(loop, index) in this.store.loops" ref="loops" :loop="loop" :index="index" :key="loop" @loop-beginning="this.logIt()"/>
+            <LoopPlayback v-for="(loop, index) in this.store.loops" ref="loops" :loop="loop" :index="index" :key="loop" @loop-beginning="this.checkRecordingStatus()"/>
         </TransitionGroup>
 </template>
 
@@ -26,8 +26,20 @@ export default {
             let loop = this.$refs.loops.at(-1)
             loop.loopPlayLoop(loop.index, loop.loop)
         },
-        logIt() {
-            console.log('it')
+        checkRecordingStatus() {
+            if (this.store.loopRecording) {
+                let loop = this.$refs.loops.at(-1)
+                loop.loopStarted = true
+
+                // If nothing is recorded, restart the pause timer
+                if (loop.loop.length === 0) {
+                    this.store.drumbeatStartTime = new Date().getTime()
+                } else {
+                // If something is recorded, stop the loop and play it
+                    this.store.toggleRecording({type:'click'})  
+                    this.autoplayLoop()  
+                }
+            }
         }
     }
 }
