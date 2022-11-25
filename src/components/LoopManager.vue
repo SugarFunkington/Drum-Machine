@@ -1,7 +1,7 @@
 <template>
         <LoopRecorder @stop-recording="this.autoplayLoop()" />
         <TransitionGroup name="loopList">
-            <LoopPlayback v-for="(loop, index) in this.store.loops" ref="loops" :loop="loop" :index="index" :key="loop" @loop-beginning="this.checkRecordingStatus()"/>
+            <LoopPlayback v-for="(loop, index) in this.store.loops" ref="loops" :loop="loop" :index="index" :key="loop" @duration-set="startBeat()"/>
         </TransitionGroup>
 </template>
 
@@ -22,11 +22,20 @@ export default {
         }
     },
     methods: {
+        startBeat() {
+            setInterval(() => {
+                for (const loopIndex in this.$refs.loops) {
+                    this.loopBeginningStatusCheck(loopIndex)
+                }
+            }, this.store.loopDuration)
+        },
         autoplayLoop() {
             let loop = this.$refs.loops.at(-1)
-            loop.loopPlayLoop(loop.index, loop.loop)
+            loop.playLoop(loop.index)
+            loop.onBeatPlayLoop = true
         },
-        checkRecordingStatus() {
+        loopBeginningStatusCheck(index) {
+            // If a new loop is being recorded
             if (this.store.loopRecording) {
                 let loop = this.$refs.loops.at(-1)
                 loop.loopStarted = true
@@ -40,6 +49,12 @@ export default {
                     this.autoplayLoop()  
                 }
             }
+
+            // Check if loop needs to be played 
+            if (this.$refs.loops.at(index).onBeatPlayLoop) {
+                this.$refs.loops.at(index).playLoop(index)
+            }
+
         }
     }
 }

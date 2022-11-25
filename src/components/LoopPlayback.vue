@@ -1,12 +1,9 @@
 <template>
     <div class="progress-container p-2 is-flex is-flex-direction-row is-justify-content-space-between">
 
-        <button @click="this.loopPlayLoop(index, loop)" v-if="!this.playingLoop">
-            <font-awesome-icon icon="fa-solid fa-play"/>
-        </button>
-
-        <button @click="this.pauseLoop()" v-if="this.playingLoop">
-            <font-awesome-icon icon="fa-solid fa-pause"/>
+        <button @click="this.togglePlayPause()" >
+            <font-awesome-icon icon="fa-solid fa-play" v-if="!this.onBeatPlayLoop"/>
+            <font-awesome-icon icon="fa-solid fa-pause" v-if="this.onBeatPlayLoop"/>
         </button>
 
         <div class="drumbeat-progress-indicator">
@@ -15,7 +12,7 @@
             </div>
 
             <div class="progress-bar-bg">
-                <div class="progress-bar" :class="{'in-progress':this.loopStarted}"></div>
+                <div class="progress-bar" :class="{'in-progress':this.playingLoop}"></div>
             </div>
         </div>
         
@@ -43,18 +40,23 @@ export default {
             store: useLoopStore(),
             playingLoop: false,
             loopStarted: false,
+            onBeatPlayLoop: false,
             loopDuration: 0,
             parentBox: {}
         };
     },
     methods: {
-        async loopPlayLoop(index) {
-
+        async playLoop(index) {
             this.playingLoop = true;
             
             if (!index) {
                 this.loopDuration = this.store.loopDuration
+                this.$emit('durationSet')
             }
+
+            setTimeout(() => {
+                this.playingLoop = false;
+            }, (this.store.loopDuration - 10))
 
             if (!this.loopStarted) {
                 for (let i=0;i<this.$refs.drumbeatPreview.length;i++) {
@@ -62,17 +64,12 @@ export default {
                 }
                 this.loopStarted = true;
             }
-
-            while (this.playingLoop) {
-                if (!index) {
-                    this.$emit('loopBeginning');
-                }
-                await this.store.playLoop(index);
-            }
+            
+            await this.store.playLoop(index)
         },
-        pauseLoop() {
-            this.playingLoop = false;
-        },
+        togglePlayPause() {
+            this.onBeatPlayLoop = !this.onBeatPlayLoop
+        }
     },
     mounted() {
         // In order to position the drumbeats correctly on the progress bar, they must be made aware of the position of their parent element
